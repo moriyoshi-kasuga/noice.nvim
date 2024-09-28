@@ -68,6 +68,10 @@ function M.parse(text, opts)
   -- text = text:gsub("</?code>", "`")
   text = M.html_entities(text)
 
+  if opts.ft == "java" or opts.ft == "class" then
+    text = text:gsub("(%[.-%])%b()", "%1()")
+  end
+
   ---@type Markdown
   local ret = {}
 
