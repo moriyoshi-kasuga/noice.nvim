@@ -255,6 +255,15 @@ function NuiView:is_mounted()
     self._nui.winid = nil
   end
 
+  if
+    self._nui
+    and self._nui.border
+    and self._nui.border.winid
+    and not vim.api.nvim_win_is_valid(self._nui.border.winid)
+  then
+    self._nui.border.winid = nil
+  end
+
   if self._nui and self._nui._.mounted and not self._nui.bufnr then
     self._nui._.mounted = false
   end
@@ -291,6 +300,7 @@ function NuiView:show()
 
   if self._scroll then
     if self._scroll.winnr ~= self._nui.winid then
+      self._scroll:unmount()
       self._scroll.winnr = self._nui.winid
       self._scroll:mount()
     end

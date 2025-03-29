@@ -15,7 +15,7 @@ local View = require("noice.view")
 ---@field skip boolean
 
 ---@class NoiceRouteConfig
----@field view string
+---@field view? string
 ---@field filter NoiceFilter
 ---@field opts? NoiceRouteOptions|NoiceViewOptions
 
@@ -23,7 +23,6 @@ local M = {}
 ---@type NoiceRoute[]
 M._routes = {}
 M._tick = 0
-M._need_redraw = false
 ---@type fun()|Interval?
 M._updater = nil
 M._updating = false
@@ -158,6 +157,7 @@ function M.update()
   if M._tick == Manager.tick() then
     return
   end
+  local next_tick = Manager.tick()
 
   M._updating = true
 
@@ -218,12 +218,12 @@ function M.update()
   end
 
   if not dirty then
-    M._tick = Manager.tick()
+    M._tick = next_tick
   end
 
   if not vim.tbl_isempty(updates) then
     Util.stats.track("router.update.updated")
-    M._need_redraw = true
+    Util.redraw()
   end
 
   M._updating = false

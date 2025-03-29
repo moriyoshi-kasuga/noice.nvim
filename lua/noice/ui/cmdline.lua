@@ -26,6 +26,13 @@ M.events = {
 M.active = nil
 M.real_cursor = vim.api.nvim__redraw ~= nil
 
+--Neovim > 0.11 handles confirm messages in two steps
+-- 1. msg_show.confirm with the message
+-- 2. cmdline_show with Yes/No/Cancel
+M.handle_confirm = vim.fn.has("nvim-0.11") == 1
+M.confirm_message = nil ---@type NoiceMessage?
+M._on_hide = nil ---@type fun()
+
 ---@alias NoiceCmdlineFormatter fun(cmdline: NoiceCmdline): {icon?:string, offset?:number, view?:NoiceViewOptions}
 
 ---@class CmdlineState
@@ -181,6 +188,19 @@ function M.on_show(event, content, pos, firstc, prompt, indent, level)
     level = level,
   })
 
+  if M.confirm_message then
+    local message = M.confirm_message --[[@as NoiceMessage]]
+    message:append(prompt)
+    M.confirm_message = nil
+    Manager.add(message)
+    M._on_hide = function()
+      vim.schedule(function()
+        Manager.remove(message)
+      end)
+    end
+    return
+  end
+
   -- This was triggered by a force redraw, so skip it
   if c:get():find(Hacks.SPECIAL, 1, true) then
     M.skipped = true
@@ -197,6 +217,10 @@ function M.on_show(event, content, pos, firstc, prompt, indent, level)
 end
 
 function M.on_hide(_, level)
+  if M._on_hide then
+    M._on_hide()
+    M._on_hide = nil
+  end
   if M.cmdlines[level] then
     M.cmdlines[level] = nil
     local active = M.active
@@ -233,16 +257,8 @@ function M.fix_cursor()
   if not win or not M.real_cursor then
     return
   end
-  local cursor = { vim.api.nvim_buf_line_count(M.position.buf), M.position.cursor }
-  vim.api.nvim_win_set_cursor(win, cursor)
-  local leftcol = math.max(cursor[2] - vim.api.nvim_win_get_width(win) + 1, 0)
-  local view = vim.api.nvim_win_call(win, vim.fn.winsaveview)
-  if view.leftcol ~= leftcol then
-    vim.api.nvim_win_call(win, function()
-      vim.fn.winrestview({ leftcol = leftcol })
-    end)
-  end
-  vim.api.nvim__redraw({ cursor = true, win = win })
+  vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(M.position.buf), M.position.cursor })
+  vim.api.nvim__redraw({ cursor = true, win = win, flush = true })
 end
 
 function M.win()
@@ -277,12 +293,25 @@ function M.on_render(_, buf, line, byte)
       col = pos.col - 1,
     },
   }
+  vim.g.ui_cmdline_pos = {
+    M.position.screenpos.row,
+    M.position.screenpos.col - 1,
+  }
   pcall(M.fix_cursor)
 end
 
 function M.last()
   local last = math.max(1, unpack(vim.tbl_keys(M.cmdlines)))
   return M.cmdlines[last]
+end
+
+---@param message NoiceMessage
+function M.on_confirm(message)
+  if not M.handle_confirm then
+    return false
+  end
+  M.confirm_message = message
+  return true
 end
 
 function M.update()

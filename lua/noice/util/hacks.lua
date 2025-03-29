@@ -19,7 +19,7 @@ function M.enable()
   M.reset_augroup()
   M.fix_cmp()
   M.fix_vim_sleuth()
-  M.fix_redraw()
+  -- M.fix_redraw()
 
   -- Hacks for Neovim < 0.10
   if vim.fn.has("nvim-0.10") == 0 then
@@ -37,11 +37,7 @@ function M.fix_redraw()
         return timer:stop()
       end
       if not Util.is_search() then
-        if vim.api.nvim__redraw then
-          vim.api.nvim__redraw({ flush = true })
-        else
-          vim.cmd.redraw()
-        end
+        Util.redraw()
       end
     end)
   )

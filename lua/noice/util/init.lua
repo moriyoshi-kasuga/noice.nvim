@@ -102,7 +102,7 @@ function M.wo(win, options)
 end
 
 function M.debounce(ms, fn)
-  local timer = vim.loop.new_timer()
+  local timer = (vim.uv or vim.loop).new_timer()
   return function(...)
     local argv = vim.F.pack_len(...)
     timer:start(ms, 0, function()
@@ -119,7 +119,7 @@ end
 ---@return F|Interval
 function M.interval(ms, fn, opts)
   opts = opts or {}
-  ---@type vim.loop.Timer?
+  ---@type uv.uv_timer_t
   local timer = nil
 
   ---@class Interval
@@ -249,8 +249,14 @@ function M.is_blocking(opts)
   return reason ~= nil, reason
 end
 
-function M.redraw()
-  vim.cmd.redraw()
+---@param opts? vim.api.keyset.redraw
+function M.redraw(opts)
+  if vim.api.nvim__redraw then
+    opts = opts or { flush = true }
+    vim.api.nvim__redraw(opts)
+  else
+    vim.cmd.redraw()
+  end
   M.stats.track("redraw")
 end
 

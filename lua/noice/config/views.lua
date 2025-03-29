@@ -64,7 +64,7 @@ M.defaults = {
     hl_group = "NoiceVirtualText",
   },
   notify = {
-    backend = "notify",
+    backend = { "snacks", "notify" },
     fallback = "mini",
     format = "notify",
     replace = false,
@@ -175,7 +175,11 @@ M.defaults = {
       col = "100%",
       -- col = 0,
     },
-    size = "auto",
+    size = {
+      width = "auto",
+      height = "auto",
+      max_height = 10,
+    },
     border = {
       style = "none",
     },

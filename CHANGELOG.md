@@ -1,5 +1,126 @@
 # Changelog
 
+## [4.10.0](https://github.com/folke/noice.nvim/compare/v4.9.0...v4.10.0) (2025-02-06)
+
+
+### Features
+
+* **fzf:** fix fzf integration ([#1048](https://github.com/folke/noice.nvim/issues/1048)) ([f3291db](https://github.com/folke/noice.nvim/commit/f3291db22863021160c16280407bcaf8fe00df61))
+
+
+### Bug Fixes
+
+* **cmdline:** use number indexed `vim.g.ui_cmdline_pos` ([eaed6cc](https://github.com/folke/noice.nvim/commit/eaed6cc9c06aa2013b5255349e4f26a6b17ab70f))
+* **confirm:** fixed `vim.fn.confirm` on nightly (0.11). Closes [#1036](https://github.com/folke/noice.nvim/issues/1036) ([00b5984](https://github.com/folke/noice.nvim/commit/00b598486601974405b2d5135d9ee7fa1638a5c7))
+* **fzf-lua:** update `update_title` and `update_scrollbar` to `update_preview_title` and `update_preview_scrollbar` ([#1034](https://github.com/folke/noice.nvim/issues/1034)) ([5530d78](https://github.com/folke/noice.nvim/commit/5530d78ae8a05ba7982af55a373c35fb18699307)), closes [#1029](https://github.com/folke/noice.nvim/issues/1029)
+* **nui:** don't error when border win was closed. Fixes [#832](https://github.com/folke/noice.nvim/issues/832) ([d2b092a](https://github.com/folke/noice.nvim/commit/d2b092aa769d5beef83ed32b1b61f09aa92f412f))
+* **telescope:** handle hl_group ID correctly in picker ([#1032](https://github.com/folke/noice.nvim/issues/1032)) ([002b202](https://github.com/folke/noice.nvim/commit/002b20226b659c299f6e386e24bc1b8159b999ae)), closes [#1024](https://github.com/folke/noice.nvim/issues/1024)
+
+## [4.9.0](https://github.com/folke/noice.nvim/compare/v4.8.0...v4.9.0) (2024-12-12)
+
+
+### Features
+
+* **api:** set vim.g.ui_cmdline_pos to (1,0)-indexed position of the noice cmdline ([a45f997](https://github.com/folke/noice.nvim/commit/a45f9975e1fc92f1cfd4a19cc58356deb5d0736c))
+
+
+### Bug Fixes
+
+* **cmdline:** don't unset `vim.g.ui_cmdline_pos`. Might be useful for others to keep around. ([29a0adb](https://github.com/folke/noice.nvim/commit/29a0adb0b21b087a7209ee3b131cb16af9f60fd4))
+* **cmdline:** make ui_cmdline_pos col 0-based ([324e6a8](https://github.com/folke/noice.nvim/commit/324e6a874fdf78d389ab69be46de0523f3af274e))
+
+## [4.8.0](https://github.com/folke/noice.nvim/compare/v4.7.2...v4.8.0) (2024-12-06)
+
+
+### Features
+
+* **msg:** added support for msg_show list_cmd and input_prompt kinds ([21fe733](https://github.com/folke/noice.nvim/commit/21fe733f8a731c9ea69f43d89b51d5594f9b00db))
+
+
+### Bug Fixes
+
+* **cmdline:** dont restore cursor after render. Fixes [#959](https://github.com/folke/noice.nvim/issues/959) ([c49a4b0](https://github.com/folke/noice.nvim/commit/c49a4b008a6e4f9ea2fcdca2120f3bf4b91f015f))
+* **health:** better health checks ([0f5f8c9](https://github.com/folke/noice.nvim/commit/0f5f8c93dd11546574640c559f5843488e460df6))
+* **lsp:** support mixed encoding for lsp clients ([#1004](https://github.com/folke/noice.nvim/issues/1004)) ([c6f6fb1](https://github.com/folke/noice.nvim/commit/c6f6fb178ebe9b4fd90383de743c3399f8c3a37c))
+* **msg:** add new msg_show.lua_print to default routes for messages ([0e9853b](https://github.com/folke/noice.nvim/commit/0e9853b73a2a49fc54f4801fd2f79b4a712e7a51))
+* **notify:** always convert msg to string if not nil and not string ([3efadda](https://github.com/folke/noice.nvim/commit/3efaddaa24ac8e8c59cc2c7d14e6ee9907a75c6d))
+* **nui:** set max size to editor cols ([d9991ca](https://github.com/folke/noice.nvim/commit/d9991ca9ac097d42ab5ec3205a457d930dce63d5))
+* **router:** prevent overriding current tick ([e0fd746](https://github.com/folke/noice.nvim/commit/e0fd746d5bfda56bc3ee63862a0fa3731ec43108))
+* **ui:** always queue incoming events when already processing ([6c7545a](https://github.com/folke/noice.nvim/commit/6c7545a7e8ee887c1136f14087f11d345ebaaa0b))
+
+
+### Performance Improvements
+
+* **hacks:** disable redraw hack. Should not be needed. If it breaks a plugin, then it should be fixed there. ([956e3ac](https://github.com/folke/noice.nvim/commit/956e3acfba2562e0bd11a58c27363c380ee1ac88))
+
+## [4.7.2](https://github.com/folke/noice.nvim/compare/v4.7.1...v4.7.2) (2024-11-18)
+
+
+### Bug Fixes
+
+* **ui:** special handling of msg_show.return_prompt. See [#998](https://github.com/folke/noice.nvim/issues/998) ([6e0c8dc](https://github.com/folke/noice.nvim/commit/6e0c8dcc61282782ac7fa4b9b4b0c910fd3f83d9))
+* **ui:** typo ([71ae386](https://github.com/folke/noice.nvim/commit/71ae3869ecce6a804d57a10ba0cde724d5b1d652))
+
+
+### Performance Improvements
+
+* **block:** use hl_ids directly as hl_group for extmarks. no need to use synIDattr ([742610e](https://github.com/folke/noice.nvim/commit/742610e9958ad4f1146983db2e7356c8105a441c))
+* **hl:** use real hl_group ids on nightly instead of ffi ([d5483a0](https://github.com/folke/noice.nvim/commit/d5483a098e26bb59839efa77d0e64a0a6389c988))
+
+## [4.7.1](https://github.com/folke/noice.nvim/compare/v4.7.0...v4.7.1) (2024-11-15)
+
+
+### Bug Fixes
+
+* **scrollbar:** hide on WinClosed. Fixes [#949](https://github.com/folke/noice.nvim/issues/949) ([ca2e3fe](https://github.com/folke/noice.nvim/commit/ca2e3fea9fb080dcb79d9129d73dac631294fe79))
+* **ui:** fix ext_messages in fast_events. Fixes [#997](https://github.com/folke/noice.nvim/issues/997) ([a802e17](https://github.com/folke/noice.nvim/commit/a802e1778a291e466b499e3bb47b5d98d33cc4a0))
+* **view:** never set winblend when transparent. Fixes [#971](https://github.com/folke/noice.nvim/issues/971) ([fd7625e](https://github.com/folke/noice.nvim/commit/fd7625e8c23491ffeaaf3fddf2a65e12f6ca9238))
+
+## [4.7.0](https://github.com/folke/noice.nvim/compare/v4.6.0...v4.7.0) (2024-11-09)
+
+
+### Features
+
+* added snacks backend and made it the default for notify (when avaiable) ([eb7e855](https://github.com/folke/noice.nvim/commit/eb7e8558880996e8acf58e48a366142e9f3d835d))
+
+
+### Bug Fixes
+
+* **snacks:** honor `Snacks.config.notifier.enabled = false` ([f381a46](https://github.com/folke/noice.nvim/commit/f381a469ddf489f048319c2dbfd4964a3ba8b45f))
+* **snacks:** make buffer modifiable when merging in another message ([46fa519](https://github.com/folke/noice.nvim/commit/46fa519d481bba76a9bc4d9f9e716481a93d2b4d))
+* **snacks:** notifier ([a55b898](https://github.com/folke/noice.nvim/commit/a55b89853846dac6236ee2bdaa49155f1b754f89))
+* **snacks:** pass correct message ids ([73d38cc](https://github.com/folke/noice.nvim/commit/73d38cc939db6553b87e5f72ff732447046bced1))
+* **treesitter:** use markdown_inline instead of markdown ([9039e7d](https://github.com/folke/noice.nvim/commit/9039e7dd35b3ef42dfff2457837af1a4d75d930c))
+* **view:** added support for multiple backends. Fixes [#986](https://github.com/folke/noice.nvim/issues/986) ([eac7e84](https://github.com/folke/noice.nvim/commit/eac7e84b16765066dc235a4d6cf8102d7436f6cd))
+
+
+### Performance Improvements
+
+* **status:** cache status messages ([1a74bde](https://github.com/folke/noice.nvim/commit/1a74bdea1d754c99f782d369b1a6115c0c7770ba))
+
+## [4.6.0](https://github.com/folke/noice.nvim/compare/v4.5.2...v4.6.0) (2024-11-02)
+
+
+### Features
+
+* **lsp:** make signature auto_open for snippets configurable ([0783e22](https://github.com/folke/noice.nvim/commit/0783e229e437941bfd624af0e551dd17bf064cd1))
+
+
+### Bug Fixes
+
+* **cmdline:** always flush cmdline in on_render. Fixes [#892](https://github.com/folke/noice.nvim/issues/892) ([973e10a](https://github.com/folke/noice.nvim/commit/973e10a001b50087db5f101d66b367d945607a07))
+* **lsp:** signature help for snippets ([3d5ad39](https://github.com/folke/noice.nvim/commit/3d5ad39f474c426ceacd13341f7599fcd3068aa2))
+* **lsp:** vim.lsp.handlers is deprecated for hover / signature_help. Fixes [#977](https://github.com/folke/noice.nvim/issues/977) ([3cd84d4](https://github.com/folke/noice.nvim/commit/3cd84d402e0b5a56cf06b6c7f644a3cc9a3956a6))
+* **mini:** show at most 10 mini messages at a time ([58ed320](https://github.com/folke/noice.nvim/commit/58ed320eeb86eac20fd1477c4027528a2a983c17))
+* redraw flush when needed. Fixes [#938](https://github.com/folke/noice.nvim/issues/938) ([c897bc8](https://github.com/folke/noice.nvim/commit/c897bc834c915fe4fa6a6de67b553994d1d267cc))
+
+## [4.5.2](https://github.com/folke/noice.nvim/compare/v4.5.1...v4.5.2) (2024-10-02)
+
+
+### Bug Fixes
+
+* **treesitter:** upstream API changes. Fixes [#962](https://github.com/folke/noice.nvim/issues/962) ([5070aae](https://github.com/folke/noice.nvim/commit/5070aaeab3d6bf3a422652e517830162afd404e0))
+
 ## [4.5.1](https://github.com/folke/noice.nvim/compare/v4.5.0...v4.5.1) (2024-09-18)
 
 

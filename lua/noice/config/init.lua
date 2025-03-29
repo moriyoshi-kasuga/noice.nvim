@@ -146,6 +146,7 @@ function M.defaults()
           enabled = true,
           trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
           luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
+          snipppets = true, -- Will open when jumping to placeholders in snippets (Neovim builtin snippets)
           throttle = 50, -- Debounce lsp signature help request by 50ms
         },
         view = nil, -- when nil, use defaults from documentation
@@ -264,11 +265,16 @@ function M.setup(options)
   })
 
   require("noice.lsp").setup()
+
+  if Snacks and pcall(require, "snacks.picker") then
+    Snacks.picker.sources.noice = require("noice.integrations.snacks").source
+  end
+
   M._running = true
 end
 
 function M.truncate_log()
-  local stat = vim.loop.fs_stat(M.options.log)
+  local stat = (vim.uv or vim.loop).fs_stat(M.options.log)
   if stat and stat.size > M.options.log_max_size then
     io.open(M.options.log, "w+"):close()
   end

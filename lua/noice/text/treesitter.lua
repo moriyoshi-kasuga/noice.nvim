@@ -16,7 +16,11 @@ end
 function M.has_lang(lang)
   if vim.treesitter.language.get_lang then
     lang = vim.treesitter.language.get_lang(lang) or lang
-    return pcall(vim.treesitter.language.add, lang)
+    local ok, ret = pcall(vim.treesitter.language.add, lang)
+    if vim.fn.has("nvim-0.11") == 1 then
+      return ok and ret and true or false
+    end
+    return ok
   end
   ---@diagnostic disable-next-line: deprecated
   return vim.treesitter.language.require_language(lang, nil, true)
@@ -30,6 +34,8 @@ end
 -- luacheck: no redefined
 function M.highlight(buf, ns, range, lang)
   lang = M.get_lang(lang)
+  lang = lang == "markdown" and "markdown_inline" or lang
+  lang = lang:lower()
 
   buf = (buf == 0 or buf == nil) and vim.api.nvim_get_current_buf() or buf
 
